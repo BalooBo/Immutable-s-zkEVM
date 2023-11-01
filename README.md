@@ -39,6 +39,27 @@ To register your application with Immutable Developer Hub, follow these steps:
 4. Select the Immutable network on which you want to deploy your application.
 5. Click the "Create application" button.
 
+**Explanation of required fields**
+
+The **Name** field is the name of your application. The **Network** field is the Immutable network on which you want to deploy your application. The available networks are:
+
+* **Mainnet**
+* **Rinkeby**
+* **Goerli**
+
+**Code example**
+
+```javascript
+// Create a new application
+const application = new ImmutableApplication({
+  name: "My Application",
+  network: "Mainnet",
+});
+
+// Register the application
+application.register();
+```
+
 ### Installing and initializing the Passport client
 
 To install and initialize the Passport client, follow these steps:
@@ -58,6 +79,23 @@ const passport = new Passport();
 3. Register the Passport authentication provider:
 
 ```javascript
+passport.use(new Passport.ImmutableProvider());
+```
+
+**Explanation of the code**
+
+The first line imports the Passport client. The second line creates a new instance of the Passport client. The third line registers the Passport authentication provider.
+
+**Code example**
+
+```javascript
+// Import the Passport client
+import Passport from "@imtbl/passport";
+
+// Create an instance of the Passport client
+const passport = new Passport();
+
+// Register the Passport authentication provider
 passport.use(new Passport.ImmutableProvider());
 ```
 
@@ -92,68 +130,28 @@ const loginButton = document.querySelector("button");
 loginButton.addEventListener("click", handleLogin);
 ```
 
-### Displaying user information
+**Explanation of the code**
 
-To display user information, you can add the following code to your `index.js` file:
+The `handleLogin()` function gets the user's ID and access token from the authenticated user. Then, the tokens are printed to the console.
 
-```javascript
-// Get the user's nickname.
-const nickname = passport.user.nickname;
-
-// Log the nickname to the console.
-console.log("Nickname:", nickname);
-```
-
-### Logging out a user
-
-To log out a user, follow these steps:
-
-1. In your `index.js` file, define a function to handle logout:
+**Code example**
 
 ```javascript
-function handleLogout() {
-  // Log out the user.
-  passport.logout();
+// Define a function to handle login
+function handleLogin() {
+  // Get the user's ID and access token.
+  const tokenId = passport.user.id;
+  const accessToken = passport.user.accessToken;
+
+  // Log the tokens to the console.
+  console.log("ID:", tokenId);
+  console.log("Access token:", accessToken);
 }
+
+// Add a button to log in
+<button onclick="handleLogin()">Log in</button>
+
+// Add code to log in when the button is clicked
+const loginButton = document.querySelector("button");
+loginButton.addEventListener("click", handleLogin);
 ```
-
-2. In your `index.html` file, add a button to log out:
-
-```html
-<button onclick="handleLogout()">Log out</button>
-```
-
-3. In your `index.js` file, add code to log out when the button is clicked:
-
-```javascript
-const logoutButton = document.querySelector("button");
-logoutButton.addEventListener("click", handleLogout);
-```
-
-### Starting a transaction from Passport
-
-To start a transaction from Passport, follow these steps:
-
-1. In your `index.js` file, define a function to start a transaction:
-
-```javascript
-function handleTransaction() {
-  // Get the transaction hash.
-  const transactionHash = passport.transaction.hash;
-
-  // Log the transaction hash to the console.
-  console.log("Transaction hash:", transactionHash);
-}
-```
-
-2. In your `index.html` file, add a button to start a transaction:
-
-```html
-<button onclick="handleTransaction()">Start transaction</button>
-```
-
-3. In your `index.js` file, add code to start a transaction when the button is clicked:
-
-```javascript
-const transactionButton = document.querySelector("button");
-transactionButton.addEventListener("click", handleTransaction);
